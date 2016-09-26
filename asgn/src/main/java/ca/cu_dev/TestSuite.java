@@ -19,7 +19,6 @@ public class TestSuite {
         try {
             for (Method test : tests) {
                 test.invoke(this);
-                logger.i("success");
             }
         } catch (Exception e) {
             // test invocation failed
@@ -69,7 +68,7 @@ public class TestSuite {
             test.run();
         } catch (Exception e) {
             // test failed
-            System.out.println("test failed " + message);
+            throw new AssertionError("test failed " + message, e);
 
         }
     }
