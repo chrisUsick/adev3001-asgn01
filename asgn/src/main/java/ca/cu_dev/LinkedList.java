@@ -1,14 +1,12 @@
 package ca.cu_dev;
 
-
-import com.sun.istack.internal.NotNull;
-
 import java.util.NoSuchElementException;
 
 /**
  * Created by chris on 26-Sep-16.
  */
 public class LinkedList<E> {
+    private static final String NO_ELEMENT_EXISTS = "Element does not exist";
     private Node<E> head;
     private Node<E> tail;
     private int size;
@@ -43,16 +41,35 @@ public class LinkedList<E> {
             } else {
                 link(element, current, current.getNext());
             }
+        } else {
+            throw new NoSuchElementException(NO_ELEMENT_EXISTS);
         }
         return true;
     }
 
-    public boolean addBefore(E element, int postition) {
+    public boolean addBefore(E element, int position) {
+        validatePosition(position);
+        if (position == 0) {
+            linkHead(element);
+        } else {
+            Node<E> current = find(position);
+            link(element, current.getPrevious(), current);
+        }
         return false;
     }
 
     public boolean addBefore(E element, E data) {
-        return false;
+        Node<E> current = find(data);
+        if (current != null) {
+            if(current == head) {
+                linkHead(element);
+            } else {
+                link(element, current.getPrevious(), current);
+            }
+        } else {
+            throw new NoSuchElementException(NO_ELEMENT_EXISTS);
+        }
+        return true;
     }
 
     public boolean addFirst(E data) {
@@ -74,7 +91,9 @@ public class LinkedList<E> {
     }
 
     public E get(int position) {
-        return null;
+        validatePosition(position);
+        Node<E> node = find(position);
+        return node.getElement();
     }
 
     public E get(E data) {
@@ -177,7 +196,7 @@ public class LinkedList<E> {
         tail = toAdd;
     }
 
-    private void link(E element, @NotNull Node<E> previous, @NotNull Node<E> current) {
+    private void link(E element, Node<E> previous, Node<E> current) {
         Node<E> toAdd = new Node<>(element, previous, current);
         previous.setNext(toAdd);
         current.setPrevious(toAdd);
