@@ -36,7 +36,15 @@ public class LinkedList<E> {
     }
 
     public boolean addAfter(E element, E data) {
-        return false;
+        Node<E> current = find(data);
+        if (current != null) {
+            if (current == tail) {
+                linkTail(element);
+            } else {
+                link(element, current, current.getNext());
+            }
+        }
+        return true;
     }
 
     public boolean addBefore(E element, int postition) {
@@ -140,7 +148,15 @@ public class LinkedList<E> {
     }
 
     private Node<E> find(E data) {
-        return null;
+        Node<E> current = head;
+        while(current != null) {
+            if (current.getElement().equals(data)) {
+                break;
+            }
+            current = current.getNext();
+        }
+
+        return current;
     }
 
     private void linkHead(E element) {

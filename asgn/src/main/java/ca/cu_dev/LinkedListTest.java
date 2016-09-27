@@ -50,7 +50,7 @@ public class LinkedListTest extends TestSuite {
     }
 
     @Test
-    public void addAfter() {
+    public void addAfterPosition() {
         it("doesn't add a element if position greater than size", () -> {
             LinkedList<String> list = new LinkedList<>();
             try {
@@ -99,6 +99,36 @@ public class LinkedListTest extends TestSuite {
             list.addAfter(str2, 1);
             assertTrue(list.getFirst() == str0);
             assertTrue(list.getLast() == str2);
+        });
+    }
+
+    @Test
+    public void addAfterData() {
+        String str1 = "str1";
+        String str2 = "str2";
+        String str3 = "str3";
+        it("doesn't add an element if the data doesn't exist", () -> {
+            try {
+                LinkedList<String> list = new LinkedList<>();
+                list.addAfter("str1", "str0");
+            } catch (NoSuchElementException e) {
+                assertTrue(true);
+            }
+        });
+
+        it("updates the tail for 1 element lists", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str1);
+            list.addAfter(str2, str1);
+            assertTrue(list.getLast() == str2);
+        });
+
+        it("adds to the middle of a list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str3);
+            list.add(str1);
+            list.addAfter(str2, str1);
+            assertTrue(list.get(1) == str2);
         });
     }
 
