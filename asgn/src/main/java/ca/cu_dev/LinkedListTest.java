@@ -23,6 +23,12 @@ public class LinkedListTest extends TestSuite {
     private final String str2 = "str2";
     private final String str3 = "str3";
 
+    public void assertListEmpty(LinkedList<?> list) {
+        assertThrows(() -> list.getFirst(), NoSuchElementException.class, "Head isn't null");
+        assertThrows(() -> list.getLast(), NoSuchElementException.class, "Tail isn't null");
+        assertTrue(list.getSize() == 0, "List size is not 0");
+    }
+
     @Test
     public void constructor() {
         it("inits correctly", () -> {
@@ -60,7 +66,7 @@ public class LinkedListTest extends TestSuite {
         it("doesn't add a element if position greater than size", () -> {
             LinkedList<String> list = new LinkedList<>();
             try {
-                list.addAfter("str1", 1);
+                list.addAfter("str1", 2);
             } catch (NoSuchElementException e) {
                 assertTrue(true);
                 assertTrue(list.getSize() == 0);
@@ -95,7 +101,7 @@ public class LinkedListTest extends TestSuite {
             String str0 = "str0";
             String str1 = "str1";
             list.add(str0);
-            boolean success = list.addAfter(str1, 0);
+            boolean success = list.addAfter(str1, 1);
             assertTrue(success);
             assertTrue(list.getFirst() == str0);
             assertTrue(list.getLast() == str1);
@@ -108,7 +114,7 @@ public class LinkedListTest extends TestSuite {
             String str2 = "str2";
             list.add("str1");
             list.add(str0);
-            list.addAfter(str2, 1);
+            list.addAfter(str2, 2);
             assertTrue(list.getFirst() == str0);
             assertTrue(list.getLast() == str2);
             assertTrue(list.getSize() == 3);
@@ -142,7 +148,7 @@ public class LinkedListTest extends TestSuite {
             list.add(str3);
             list.add(str1);
             list.addAfter(str2, str1);
-            assertTrue(list.get(1) == str2);
+            assertTrue(list.get(2) == str2);
             assertTrue(list.getSize() == 3);
         });
     }
@@ -195,8 +201,8 @@ public class LinkedListTest extends TestSuite {
             LinkedList<String> list = new LinkedList<>();
             list.add(str3);
             list.add(str1);
-            list.addBefore(str2, 1);
-            assertTrue(list.get(1) == str2);
+            list.addBefore(str2, 2);
+            assertTrue(list.get(2) == str2);
             assertTrue(list.getSize() == 3);
         });
     }
@@ -228,7 +234,7 @@ public class LinkedListTest extends TestSuite {
             list.add(str3);
             list.add(str1);
             list.addBefore(str2, str3);
-            assertTrue(list.get(1) == str2);
+            assertTrue(list.get(2) == str2);
             assertTrue(list.getSize() == 3);
         });
     }
@@ -279,9 +285,7 @@ public class LinkedListTest extends TestSuite {
         it("clears an empty list", () -> {
             LinkedList<String> list = new LinkedList<>();
             list.clear();
-            assertThrows(() -> list.getFirst(), NoSuchElementException.class);
-            assertThrows(() -> list.getLast(), NoSuchElementException.class);
-            assertTrue(list.getSize() == 0);
+            assertListEmpty(list);
         });
 
         it("clears a list with elements", () -> {
@@ -289,9 +293,7 @@ public class LinkedListTest extends TestSuite {
             list.add(str1);
             list.add(str2);
             list.clear();
-            assertThrows(() -> list.getFirst(), NoSuchElementException.class);
-            assertThrows(() -> list.getLast(), NoSuchElementException.class);
-            assertTrue(list.getSize() == 0);
+            assertListEmpty(list);
         });
     }
 
@@ -366,13 +368,13 @@ public class LinkedListTest extends TestSuite {
 
         it("throws exception for position greater than size", () -> {
             LinkedList<String> list = new LinkedList<>();
-            assertThrows(() -> list.get(1), NoSuchElementException.class);
+            assertThrows(() -> list.get(2), NoSuchElementException.class);
         });
 
         it("gets an element from a 1 element list", () -> {
             LinkedList<String> list = new LinkedList<>();
             list.add(str1);
-            assertTrue(list.get(0) == str1);
+            assertTrue(list.get(1) == str1);
         });
 
         it("gets an element from a multi-element list", () -> {
@@ -380,7 +382,7 @@ public class LinkedListTest extends TestSuite {
             list.add(str3);
             list.add(str2);
             list.add(str1);
-            assertTrue(list.get(1) == str2);
+            assertTrue(list.get(2) == str2);
         });
     }
 
@@ -457,8 +459,8 @@ public class LinkedListTest extends TestSuite {
             list.insert(str1);
             list.insert(str3);
             list.insert(str2);
-            assertTrue(list.get(1) == str2);
-            assertTrue(list.get(2) == str3);
+            assertTrue(list.get(2) == str2);
+            assertTrue(list.get(3) == str3);
             assertTrue(list.getSize() == 3);
         });
 
@@ -467,14 +469,302 @@ public class LinkedListTest extends TestSuite {
             list.add(str1);
             list.add(str2);
             list.insert(str3);
-            assertTrue(list.get(1) == str3);
-            assertTrue(list.get(0) == str2);
+            assertTrue(list.get(3) == str3);
+            assertTrue(list.get(1) == str2);
             assertTrue(list.get(2) == str1);
+        });
+
+        it("inserts to the end of a list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.insert(str2);
+            list.insert(str1);
+            list.insert(str3);
+            assertTrue(list.getSize() == 3);
+            assertTrue(list.get(2) == str2);
+            assertTrue(list.get(3) == str3);
+        });
+
+    }
+
+    @Test
+    public void removeHead() {
+        it("throws exception for empty list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            assertThrows(() -> list.remove(), NoSuchElementException.class);
+        });
+
+        it("removes element on single element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str1);
+            list.remove();
+            assertTrue(list.getSize() == 0);
+            assertThrows(() -> list.get(), NoSuchElementException.class);
+        });
+
+        it("removes element from a multi-element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str2);
+            list.add(str1);
+            list.remove();
+            assertTrue(list.getFirst() == str2);
+            assertTrue(list.getLast() == str2);
+            assertTrue(list.getSize() == 1);
         });
     }
 
+    @Test
+    public void removePosition() {
+        it("throws exception for negative index", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            assertThrows(() -> list.remove(-1), NoSuchElementException.class);
+        });
 
+        it("throws exception for index not in list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str1);
+            assertThrows(() -> list.remove(2), NoSuchElementException.class);
+        });
 
+        it("removes element in single element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str1);
+            list.remove(1);
+            assertListEmpty(list);
+        });
+
+        it("removes element from multi-element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str3);
+            list.add(str2);
+            list.add(str1);
+            list.remove(2);
+            assertTrue(list.getFirst() == str1);
+            assertTrue(list.getLast() == str3);
+            assertTrue(list.getSize() == 2);
+        });
+    }
+
+    @Test
+    public void removeData() {
+        it("throws exception for missing data", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            assertThrows(() -> list.remove(str1), NoSuchElementException.class);
+        });
+
+        it("removes a element from a single element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str1);
+            list.remove("str1");
+            assertListEmpty(list);
+        });
+
+        it("removes an element from multi-element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str3);
+            list.add(str2);
+            list.add(str1);
+            list.remove("str2");
+            assertTrue(list.getFirst() == str1);
+            assertTrue(list.getLast() == str3);
+            assertTrue(list.getSize() == 2);
+        });
+    }
+
+    @Test
+    public void removeFirst() {
+        it("throws exception for empty list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            assertThrows(() -> list.removeFirst(), NoSuchElementException.class);
+            assertTrue(list.getSize() == 0);
+        });
+
+        it("removes an element in a single element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str1);
+            list.removeFirst();
+            assertListEmpty(list);
+        });
+
+        it("removes first element from multi-element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str2);
+            list.add(str1);
+            list.removeFirst();
+            assertTrue(list.getFirst() == str2);
+            assertTrue(list.getLast() == str2);
+            assertTrue(list.getSize() == 1);
+        });
+    }
+
+    @Test
+    public void removeLast() {
+        it("throws an exception for empty list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            assertThrows(() -> list.removeLast(), NoSuchElementException.class);
+        });
+
+        it("removes the last element in a single element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str1);
+            list.removeLast();
+            assertListEmpty(list);
+        });
+
+        it("removes the last element from a multi-element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str3);
+            list.add(str2);
+            list.add(str1);
+            list.removeLast();
+            assertTrue(list.getFirst() == str1);
+            assertTrue(list.getLast() == str2);
+            assertTrue(list.getSize() == 2);
+        });
+    }
+
+    @Test
+    public void setHead() {
+        it("throws exception for empty list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            assertThrows(() -> list.set(str1), NoSuchElementException.class, "setFirst");
+            assertListEmpty(list);
+        });
+
+        it("sets the data on the first element in a single element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str1);
+            list.set(str2);
+            assertTrue(list.getFirst() == str2);
+            assertTrue(list.getLast() == str2);
+        });
+
+        it("sets first in a multi-element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str3);
+            list.add(str2);
+            list.add(str1);
+            list.set("str4");
+            assertTrue(list.getFirst().equals("str4"));
+            assertTrue(list.get(2) == str2);
+        });
+    }
+
+    @Test
+    public void setPosition() {
+        it("throws exception for index less than 1 on empty list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            assertThrows(() -> list.set(str1, 0), NoSuchElementException.class);
+            assertThrows(() -> list.set(str1, -1), NoSuchElementException.class);
+        });
+
+        it("throws exception for bad position on list with data", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str3);
+            list.add(str2);
+            list.add(str1);
+            assertThrows(() -> list.set(str1, 0), NoSuchElementException.class);
+            assertThrows(() -> list.set(str1, 4), NoSuchElementException.class);
+        });
+
+        it("sets position for single element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str1);
+            list.set("str4", 1);
+            assertTrue(list.getSize() == 1);
+            assertTrue(list.getFirst().equals("str4"));
+        });
+        it("sets position for multi-element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str3);
+            list.add(str2);
+            list.add(str1);
+            list.set("str4", 3);
+            assertTrue(list.getSize() == 3);
+            assertTrue(list.getLast().equals("str4"));
+        });
+    }
+
+    @Test
+    public void setData() {
+        it("throws exception when data doesn't exist", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            assertThrows(() -> list.set(str1), NoSuchElementException.class);
+        });
+
+        it("sets data when there is a single element", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str1);
+            list.set(str2, "str1");
+            assertTrue(list.getFirst().equals("str2"));
+            assertTrue(list.getLast().equals("str2"));
+            assertTrue(list.getSize() == 1);
+        });
+        it("sets position for multi-element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str3);
+            list.add(str2);
+            list.add(str1);
+            list.set("str4", "str2");
+            assertTrue(list.getSize() == 3);
+            assertTrue(list.getLast() == str3);
+            assertTrue(list.get(2).equals("str4"));
+        });
+    }
+
+    @Test
+    public void setFirst() {
+        it("throws exception for emtpy list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            assertThrows(() -> list.setFirst(str1), NoSuchElementException.class);
+        });
+
+        it("sets the head on a single element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str1);
+            list.setFirst(str2);
+            assertTrue(list.getSize() == 1);
+            assertTrue(list.getFirst().equals("str2"));
+            assertTrue(list.getLast().equals("str2"));
+        });
+
+        it("sets the head on a mutli-element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str2);
+            list.add(str1);
+            list.setFirst(str3);
+            assertTrue(list.getSize() == 2);
+            assertTrue(list.getFirst() == str3);
+            assertTrue(list.getLast() == str2);
+        });
+
+    }
+    @Test
+    public void setLast() {
+        it("throws exception for emtpy list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            assertThrows(() -> list.setLast(str1), NoSuchElementException.class);
+            assertListEmpty(list);
+        });
+
+        it("sets the head on a single element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str1);
+            list.setLast(str2);
+            assertTrue(list.getSize() == 1);
+            assertTrue(list.getFirst().equals("str2"));
+            assertTrue(list.getLast().equals("str2"));
+        });
+
+        it("sets the tail on a mutli-element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(str2);
+            list.add(str1);
+            list.setLast(str3);
+            assertTrue(list.getSize() == 2);
+            assertTrue(list.getLast() == str3);
+            assertTrue(list.getFirst() == str1);
+        });
+    }
 
 
 

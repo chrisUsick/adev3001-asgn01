@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 /**
  * Created by chris on 26-Sep-16.
  */
-public class LinkedList<E> {
+public class LinkedList<E extends Comparable<E>> {
     private static final String NO_ELEMENT_EXISTS = "Element does not exist";
     private Node<E> head;
     private Node<E> tail;
@@ -23,7 +23,7 @@ public class LinkedList<E> {
     public boolean addAfter(E element, int position) {
         validatePosition(position);
         Node<E> current;
-        if (position == size - 1) {
+        if (position == size) {
             linkTail(element);
         } else {
             current = find(position);
@@ -49,7 +49,7 @@ public class LinkedList<E> {
 
     public boolean addBefore(E element, int position) {
         validatePosition(position);
-        if (position == 0) {
+        if (position == 1) {
             linkHead(element);
         } else {
             Node<E> current = find(position);
@@ -93,7 +93,7 @@ public class LinkedList<E> {
     }
 
     public E get() {
-        return null;
+        return getFirst();
     }
 
     public E get(int position) {
@@ -132,54 +132,116 @@ public class LinkedList<E> {
     }
 
     public boolean insert(E data) {
-        return false;
+        Node<E> previous = null, current;
+        int compared;
+        if (size == 0) {
+            linkHead(data);
+        } else {
+            current = head;
+            compared = current.getElement().compareTo(data);
+            while(current != null && compared < 0) {
+                previous = current;
+                current = current.getNext();
+                if (current != null) {
+                    compared = current.getElement().compareTo(data);
+                }
+            }
+            if (previous != null) {
+                if (current != null) {
+                    link(data, previous, current);
+                } else {
+                    linkTail(data);
+                }
+            } else {
+                linkHead(data);
+            }
+        }
+        return true;
     }
 
     public E remove() {
-        return null;
+        return unlinkHead();
     }
 
     public E remove(int position) {
-        return null;
+        E result;
+        validatePosition(position);
+        if (position == 1) {
+            result = unlinkHead();
+        } else if (position == size) {
+            result = unlinkTail();
+        } else {
+            Node<E> current = find(position);
+            result = unlink(current);
+        }
+        return result;
     }
 
     public E remove(E data) {
-        return null;
+        Node<E> current = find(data);
+        E result;
+        if (current == null) {
+            throw new NoSuchElementException(NO_ELEMENT_EXISTS);
+        }
+
+        if (current == head) {
+            result = unlinkHead();
+        } else if (current == tail) {
+            result = unlinkTail();
+        } else {
+            result = unlink(current);
+        }
+        return result;
     }
 
     public E removeFirst() {
-        return null;
+        return remove();
     }
 
     public E removeLast() {
-        return null;
+        return unlinkTail();
     }
 
-    public E set(E data) {
-        return null;
+    public E set(E dataToReplace) {
+        if (isEmpty()) {
+            throw new NoSuchElementException(NO_ELEMENT_EXISTS);
+        }
+        return setData(dataToReplace, head);
     }
 
     public E set(E data, int position) {
-        return null;
+        validatePosition(position);
+        E oldData;
+        if (position == size) {
+            oldData = setData(data, tail);
+        } else {
+            Node<E> current = find(position);
+            oldData = setData(data, current);
+        }
+        return oldData;
     }
 
     public E set(E dataToReplace, E data) {
-        return null;
+        Node<E> current = find(data);
+        if (current == null) {
+            throw new NoSuchElementException(NO_ELEMENT_EXISTS);
+        }
+        return setData(dataToReplace, current);
     }
 
     public E setFirst(E data) {
-        return null;
+        return set(data);
     }
 
     public E setLast(E data) {
-        return null;
+        return setData(data, tail);
     }
 
     private Node<E> find(int position) {
         Node<E> current = head;
-        int i = 0;
+        int i = 1;
         while(i < position) {
-            current = head.getNext();
+            current = current.getNext();
             ++i;
         }
         return current;
@@ -188,7 +250,7 @@ public class LinkedList<E> {
     private Node<E> find(E data) {
         Node<E> current = head;
         while(current != null) {
-            if (current.getElement().equals(data)) {
+            if (current.getElement().compareTo(data) == 0) {
                 break;
             }
             current = current.getNext();
@@ -229,24 +291,56 @@ public class LinkedList<E> {
     }
 
     private E setData(E data, Node<E> current) {
-        return null;
+        if (current == null) {
+            throw new NoSuchElementException(NO_ELEMENT_EXISTS);
+        }
+        E replacedData = current.getElement();
+        current.setElement(data);
+        return replacedData;
     }
 
     private E unlink(Node<E> current) {
-        return null;
+        Node<E> previous = current.getPrevious(),
+                next = current.getNext();
+        previous.setNext(next);
+        next.setPrevious(previous);
+        --size;
+        return current.getElement();
     }
 
     private E unlinkHead() {
-        return null;
+        if (head == null) {
+            throw new NoSuchElementException(NO_ELEMENT_EXISTS);
+        }
+        Node<E> current = head;
+        head = current.getNext();
+        --size;
+        if (head == null) {
+            tail = null;
+        }
+
+        return current.getElement();
     }
 
     private E unlinkTail() {
+        if (tail == null) {
+            throw new NoSuchElementException(NO_ELEMENT_EXISTS);
+        }
+        Node<E> current = tail;
+        tail = current.getPrevious();
+        if (tail != null) {
+            tail.setNext(null);
+        }
+        --size;
+        if (tail == null) {
+            head = null;
+        }
 
-        return null;
+        return current.getElement();
     }
 
     private void validatePosition(int position) {
-        if ((position == size && size == 0) || position < 0 || position > size) {
+        if ((position == size && size == 0) || position < 1 || position > size) {
             throw new NoSuchElementException(
                     String.format("Invalid position: %d", position));
         }

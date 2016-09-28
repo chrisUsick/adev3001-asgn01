@@ -71,11 +71,14 @@ public class TestSuite {
     protected void assertThrows(Runnable routine, Class<?> exception, String message) {
         try {
             routine.run();
+            throw new AssertionError(
+                "Failed to throw exception. Original message: " + message);
         } catch (Exception e) {
             if (e.getClass() != exception) {
-                throw new AssertionError(message);
+                throw new AssertionError(message, e);
             }
         }
+
     }
 
     public void it(String message, Runnable test) {
