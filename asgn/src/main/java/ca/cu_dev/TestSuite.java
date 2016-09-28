@@ -3,6 +3,7 @@ package ca.cu_dev;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 /**
  * Created by chris on 26-Sep-16.
@@ -60,6 +61,20 @@ public class TestSuite {
     protected void assertTrue(boolean b, String message) throws AssertionError {
         if (!b) {
             throw new AssertionError(message);
+        }
+    }
+
+    protected void assertThrows(Runnable routine, Class<?> exception) {
+        assertThrows(routine, exception, "");
+    }
+
+    protected void assertThrows(Runnable routine, Class<?> exception, String message) {
+        try {
+            routine.run();
+        } catch (Exception e) {
+            if (e.getClass() != exception) {
+                throw new AssertionError(message);
+            }
         }
     }
 

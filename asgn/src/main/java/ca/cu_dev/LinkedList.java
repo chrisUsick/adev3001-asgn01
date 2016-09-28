@@ -73,17 +73,23 @@ public class LinkedList<E> {
     }
 
     public boolean addFirst(E data) {
-        return false;
+        linkHead(data);
+        return true;
     }
 
     public boolean addLast(E data) {
-        return false;
+        linkTail(data);
+        return true;
     }
 
-    public void clear() {}
+    public void clear() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
 
     public boolean isEmpty(){
-        return false;
+        return size == 0;
     }
 
     public E get() {
@@ -97,15 +103,28 @@ public class LinkedList<E> {
     }
 
     public E get(E data) {
-        return null;
+        Node<E> current = find(data);
+        if (current != null) {
+            return current.getElement();
+        } else {
+            throw new NoSuchElementException(NO_ELEMENT_EXISTS);
+        }
     }
 
     public E getFirst() {
-        return head.getElement();
+        if (head != null) {
+            return head.getElement();
+        } else {
+            throw new NoSuchElementException(NO_ELEMENT_EXISTS);
+        }
     }
 
     public E getLast() {
-        return tail.getElement();
+        if (tail != null) {
+            return tail.getElement();
+        } else {
+            throw new NoSuchElementException(NO_ELEMENT_EXISTS);
+        }
     }
 
     public int getSize() {
@@ -192,8 +211,14 @@ public class LinkedList<E> {
 
     private void linkTail(E element) {
         Node<E> toAdd = new Node<>(element, tail, null);
-        tail.setNext(toAdd);
+        if (tail != null) {
+            tail.setNext(toAdd);
+        }
         tail = toAdd;
+        if (size == 0) {
+            head = tail;
+        }
+        size++;
     }
 
     private void link(E element, Node<E> previous, Node<E> current) {
