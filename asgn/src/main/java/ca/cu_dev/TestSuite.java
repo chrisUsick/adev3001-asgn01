@@ -10,13 +10,17 @@ import java.util.NoSuchElementException;
  */
 public class TestSuite {
     private Logger logger;
+    private String name;
+
     public TestSuite(Logger l) {
         logger = l;
     }
+
     public void run() throws Exception {
-        
+
         ArrayList<Method> tests = this.getTestMethods();
         try {
+            logger.i("Executing tests for: " + getName());
             for (Method test : tests) {
                 test.invoke(this);
             }
@@ -91,4 +95,11 @@ public class TestSuite {
     }
 
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

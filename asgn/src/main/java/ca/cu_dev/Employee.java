@@ -38,9 +38,9 @@ public class Employee implements Comparable<Employee>{
     public int compareTo(Employee o) {
         int result = 0;
 
-        if (o.getEmployeeID() > employeeID) {
+        if (o.getEmployeeID() < employeeID) {
             result = 1;
-        } else if (o.getEmployeeID() < employeeID) {
+        } else if (o.getEmployeeID() > employeeID) {
             result = -1;
         }
         return result;

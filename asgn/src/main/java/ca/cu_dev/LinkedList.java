@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 /**
  * LinkedList - This is a doubly linked list implementation.
  * It can be used as an ordered or an unordered list.
+ * It is a 1 based implementation
  *
  * <pre>
  *
@@ -85,6 +86,12 @@ public class LinkedList<E extends Comparable<E>> {
         return true;
     }
 
+    /**
+     * Adds an element before given position
+     * @param element   element to add to the list
+     * @param position  position to add before
+     * @return          true if addition is sucessful
+     */
     public boolean addBefore(E element, int position) {
         validatePosition(position);
         if (position == 1) {
@@ -96,6 +103,12 @@ public class LinkedList<E extends Comparable<E>> {
         return false;
     }
 
+    /**
+     * Adds an element before given data element
+     * @param element   Element to insert to the list
+     * @param data      data to insert before
+     * @return          true if insertion is successful
+     */
     public boolean addBefore(E element, E data) {
         Node<E> current = find(data);
         if (current != null) {
@@ -110,36 +123,67 @@ public class LinkedList<E extends Comparable<E>> {
         return true;
     }
 
+    /**
+     * adds an element to the first position in the list
+     * @param data  data to add
+     * @return      true if addition is successful
+     */
     public boolean addFirst(E data) {
         linkHead(data);
         return true;
     }
 
+    /**
+     * add elements to the last position in the list
+     * @param data  data to add
+     * @return      true if addition is successful
+     */
     public boolean addLast(E data) {
         linkTail(data);
         return true;
     }
 
+    /**
+     * Empties the contents of the list
+     */
     public void clear() {
         head = null;
         tail = null;
         size = 0;
     }
 
+    /**
+     * check if the list has elements in it
+     * @return
+     */
     public boolean isEmpty(){
         return size == 0;
     }
 
+    /**
+     * get the first element at in the list
+     * @return  The first element in the list
+     */
     public E get() {
         return getFirst();
     }
 
+    /**
+     * Gets the element at the given position
+     * @param position  position to retrieve
+     * @return          the element at the given position
+     */
     public E get(int position) {
         validatePosition(position);
         Node<E> node = find(position);
         return node.getElement();
     }
 
+    /**
+     * get the element that matches the provided data
+     * @param data  data to search for
+     * @return      the element that matches data
+     */
     public E get(E data) {
         Node<E> current = find(data);
         if (current != null) {
@@ -149,6 +193,10 @@ public class LinkedList<E extends Comparable<E>> {
         }
     }
 
+    /**
+     * gets the first element in the list
+     * @return the first element in the list
+     */
     public E getFirst() {
         if (head != null) {
             return head.getElement();
@@ -157,6 +205,10 @@ public class LinkedList<E extends Comparable<E>> {
         }
     }
 
+    /**
+     * gets the last element in the list
+     * @return the last element in the list
+     */
     public E getLast() {
         if (tail != null) {
             return tail.getElement();
@@ -165,10 +217,20 @@ public class LinkedList<E extends Comparable<E>> {
         }
     }
 
+    /**
+     * get the size of the list
+     * @return the size of the list
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * Inserts an element into the list in the correct order
+     * If the list isn't ordered it will insert into the first valid location
+     * @param data  the data to insert
+     * @return      true if the insertion succeeded
+     */
     public boolean insert(E data) {
         Node<E> previous = null, current;
         int compared;
@@ -197,10 +259,19 @@ public class LinkedList<E extends Comparable<E>> {
         return true;
     }
 
+    /**
+     * removes the head of the list
+     * @return  the element that was removed
+     */
     public E remove() {
         return unlinkHead();
     }
 
+    /**
+     * Removes the element at a given position
+     * @param position  the position of the element to remove
+     * @return          the element that was removed
+     */
     public E remove(int position) {
         E result;
         validatePosition(position);
@@ -215,6 +286,11 @@ public class LinkedList<E extends Comparable<E>> {
         return result;
     }
 
+    /**
+     * removes the element that matches the given data
+     * @param data data to use to match the element
+     * @return     element that was removed
+     */
     public E remove(E data) {
         Node<E> current = find(data);
         E result;
@@ -232,14 +308,27 @@ public class LinkedList<E extends Comparable<E>> {
         return result;
     }
 
+    /**
+     * removes the first element in the list
+     * @return the element that was removed
+     */
     public E removeFirst() {
         return remove();
     }
 
+    /**
+     * removes the last item of the list
+     * @return the element that was removed
+     */
     public E removeLast() {
         return unlinkTail();
     }
 
+    /**
+     * replaces the first element of the list
+     * @param dataToReplace   the data to set the first element to
+     * @return  the old element
+     */
     public E set(E dataToReplace) {
         if (isEmpty()) {
             throw new NoSuchElementException(NO_ELEMENT_EXISTS);
@@ -247,6 +336,12 @@ public class LinkedList<E extends Comparable<E>> {
         return setData(dataToReplace, head);
     }
 
+    /**
+     * replaces the element at the given index with new data
+     * @param data      data to set the element to
+     * @param position  position of the data to replace
+     * @return          the old element
+     */
     public E set(E data, int position) {
         validatePosition(position);
         E oldData;
@@ -259,6 +354,12 @@ public class LinkedList<E extends Comparable<E>> {
         return oldData;
     }
 
+    /**
+     * replaces the element that matches the given search data
+     * @param dataToReplace   data used to replace
+     * @param data            data used to find the element
+     * @return                the old data in the replaced element
+     */
     public E set(E dataToReplace, E data) {
         Node<E> current = find(data);
         if (current == null) {
@@ -267,14 +368,29 @@ public class LinkedList<E extends Comparable<E>> {
         return setData(dataToReplace, current);
     }
 
+    /**
+     * replaces the first element of the list
+     * @param data   the data to set the first element to
+     * @return       the old element
+     */
     public E setFirst(E data) {
         return set(data);
     }
 
+    /**
+     * replaces the last element of the list
+     * @param data  the data to set the last element to
+     * @return      the old element
+     */
     public E setLast(E data) {
         return setData(data, tail);
     }
 
+    /**
+     * finds the node at the given position
+     * @param position  position in the list
+     * @return          the node
+     */
     private Node<E> find(int position) {
         Node<E> current = head;
         int i = 1;
@@ -285,6 +401,11 @@ public class LinkedList<E extends Comparable<E>> {
         return current;
     }
 
+    /**
+     * find the node with the given data
+     * @param data  data to find
+     * @return      node containing the data
+     */
     private Node<E> find(E data) {
         Node<E> current = head;
         while(current != null) {
@@ -297,6 +418,10 @@ public class LinkedList<E extends Comparable<E>> {
         return current;
     }
 
+    /**
+     * set the new element to the head of the list
+     * @param element element to place at the head
+     */
     private void linkHead(E element) {
         Node<E> toAdd = new Node<E>(element, null, head);
         if (head != null) {
@@ -309,6 +434,10 @@ public class LinkedList<E extends Comparable<E>> {
         size++;
     }
 
+    /**
+     * set the given element to the tail of the list
+     * @param element element to place at tail
+     */
     private void linkTail(E element) {
         Node<E> toAdd = new Node<>(element, tail, null);
         if (tail != null) {
@@ -321,6 +450,12 @@ public class LinkedList<E extends Comparable<E>> {
         size++;
     }
 
+    /**
+     * Link the given element to be in between the previous and current element
+     * @param element   element to link
+     * @param previous  the node that will be before the new node
+     * @param current   the node that will be after the new node
+     */
     private void link(E element, Node<E> previous, Node<E> current) {
         Node<E> toAdd = new Node<>(element, previous, current);
         previous.setNext(toAdd);
@@ -328,6 +463,12 @@ public class LinkedList<E extends Comparable<E>> {
         size++;
     }
 
+    /**
+     * sets the data of the given node
+     * @param data
+     * @param current
+     * @return
+     */
     private E setData(E data, Node<E> current) {
         if (current == null) {
             throw new NoSuchElementException(NO_ELEMENT_EXISTS);
@@ -337,6 +478,11 @@ public class LinkedList<E extends Comparable<E>> {
         return replacedData;
     }
 
+    /**
+     * removes the given node from the list
+     * @param current the node to remove
+     * @return        the data in the removed node
+     */
     private E unlink(Node<E> current) {
         Node<E> previous = current.getPrevious(),
                 next = current.getNext();
@@ -346,6 +492,10 @@ public class LinkedList<E extends Comparable<E>> {
         return current.getElement();
     }
 
+    /**
+     * removes the head node from the list
+     * @return  the data in the head node which was removed
+     */
     private E unlinkHead() {
         if (head == null) {
             throw new NoSuchElementException(NO_ELEMENT_EXISTS);
@@ -360,6 +510,10 @@ public class LinkedList<E extends Comparable<E>> {
         return current.getElement();
     }
 
+    /**
+     * removes the tail node from the list
+     * @return  the data in the removed tail node
+     */
     private E unlinkTail() {
         if (tail == null) {
             throw new NoSuchElementException(NO_ELEMENT_EXISTS);
@@ -377,6 +531,10 @@ public class LinkedList<E extends Comparable<E>> {
         return current.getElement();
     }
 
+    /**
+     * validates that the position is within the list
+     * @param position position to validate
+     */
     private void validatePosition(int position) {
         if ((position == size && size == 0) || position < 1 || position > size) {
             throw new NoSuchElementException(

@@ -6,6 +6,7 @@ package ca.cu_dev;
 public class NodeTest extends TestSuite {
     public NodeTest() {
         super(new Logger());
+        setName("Nodes test");
     }
     public static void main(String[] args) throws Exception{
         TestSuite testSuite = new NodeTest();

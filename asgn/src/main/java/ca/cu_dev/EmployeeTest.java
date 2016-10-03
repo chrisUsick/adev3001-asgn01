@@ -6,6 +6,7 @@ package ca.cu_dev;
 public class EmployeeTest extends TestSuite {
     public EmployeeTest() {
         super(new Logger());
+        setName("Employees");
     }
 
     public static void main(String[] args) throws Exception {
@@ -53,8 +54,8 @@ public class EmployeeTest extends TestSuite {
     public void compareTo() {
         it("compares 2 employees", () -> {
             Employee e1 = new Employee(1), e2 = new Employee(2);
-            assertTrue(e1.compareTo(e2) > 0);
-            assertTrue(e2.compareTo(e1) < 0);
+            assertTrue(e1.compareTo(e2) < 0);
+            assertTrue(e2.compareTo(e1) > 0);
             assertTrue(e1.compareTo(e1) == 0);
         });
     }

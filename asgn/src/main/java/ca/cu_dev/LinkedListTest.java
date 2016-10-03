@@ -4,6 +4,7 @@ import sun.awt.image.ImageWatched;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -14,6 +15,7 @@ import java.util.NoSuchElementException;
 public class LinkedListTest extends TestSuite {
     public LinkedListTest() {
         super(new Logger());
+        setName("Linked Lists");
     }
     public static void main(String[] args) throws Exception{
         LinkedListTest testSuite = new LinkedListTest();
@@ -763,6 +765,42 @@ public class LinkedListTest extends TestSuite {
             assertTrue(list.getSize() == 2);
             assertTrue(list.getLast() == str3);
             assertTrue(list.getFirst() == str1);
+        });
+    }
+
+    @Test
+    public void employeeLinkedLists() {
+        Employee e1 = new Employee(1), e2 = new Employee(2), e3 = new Employee(3);
+        LinkedList<Employee> list = new LinkedList<Employee>();
+        it("adds employees", () -> {
+            list.clear();
+            list.add(e2);
+            list.add(e1);
+            assertTrue(list.getFirst() == e1);
+        });
+
+        it("sorts employees", () -> {
+            list.clear();
+            list.insert(e2);
+            list.insert(e3);
+            list.insert(e1);
+            assertTrue(list.getFirst() == e1);
+            assertTrue(list.get(2) == e2);
+        });
+
+        it("adds after elements", () -> {
+            list.clear();
+            list.add(e2);
+            list.addAfter(e3, e2);
+            assertTrue(list.getLast() == e3);
+        });
+
+        it("finds an element", () -> {
+            list.clear();
+            list.add(e3);
+            list.add(e2);
+            list.add(e1);
+            assertTrue(list.get(new Employee(2)) == e2);
         });
     }
 
