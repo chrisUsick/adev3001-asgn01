@@ -14,8 +14,7 @@ public class TestSuite {
         logger = l;
     }
     public void run() throws Exception {
-        logger = new Logger();
-
+        
         ArrayList<Method> tests = this.getTestMethods();
         try {
             for (Method test : tests) {

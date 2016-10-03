@@ -3,23 +3,55 @@ package ca.cu_dev;
 import java.util.NoSuchElementException;
 
 /**
- * Created by chris on 26-Sep-16.
+ * LinkedList - This is a doubly linked list implementation.
+ * It can be used as an ordered or an unordered list.
+ *
+ * <pre>
+ *
+ * Assignment: #1
+ * Course: ADEV-3001
+ * Date Created: September 26, 2016
+ *
+ * Revision Log
+ * Who          When    Reason
+ * --------- ---------- ----------------------------------
+ *
+ * </pre>
+ *
+ * @author Chris Usick
+ * @version 1.0
+ *
  */
+
 public class LinkedList<E extends Comparable<E>> {
     private static final String NO_ELEMENT_EXISTS = "Element does not exist";
     private Node<E> head;
     private Node<E> tail;
     private int size;
 
+    /**
+     * Constructor - takes in no parameters
+     */
     public LinkedList() {
 
     }
 
+    /**
+     * add an element to the beginning of the list
+     * @param element   element to add to the list
+     * @return          true if element gets added
+     */
     public boolean add(E element) {
         linkHead(element);
         return true;
     }
 
+    /**
+     * Add an element after the given position
+     * @param element       element to add to the list
+     * @param position      the position to add after
+     * @return              true if the element gets added
+     */
     public boolean addAfter(E element, int position) {
         validatePosition(position);
         Node<E> current;
@@ -33,6 +65,12 @@ public class LinkedList<E extends Comparable<E>> {
         return true;
     }
 
+    /**
+     * Add an element after the given data element
+     * @param element   element to add
+     * @param data      data to add after
+     * @return          true if element is added
+     */
     public boolean addAfter(E element, E data) {
         Node<E> current = find(data);
         if (current != null) {

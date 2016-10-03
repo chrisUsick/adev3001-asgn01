@@ -26,4 +26,31 @@ public class NodeTest extends TestSuite {
             assertTrue(n.getPrevious() == node1);
         });
     }
+
+    @Test
+    public void properties() {
+        it("gets and sets an the element", () -> {
+            Node<String> n = new Node<>();
+            String str = "str";
+            assertTrue(n.getElement() == null);
+            n.setElement(str);
+            assertTrue(n.getElement() == str);
+        });
+
+        it("gets and sets an the next node", () -> {
+            Node<String> n = new Node<>();
+            Node<String> next = new Node<>();
+            assertTrue(n.getNext() == null);
+            n.setNext(next);
+            assertTrue(n.getNext() == next);
+        });
+
+        it("gets and sets an the previous node", () -> {
+            Node<String> n = new Node<>();
+            Node<String> previous = new Node<>();
+            assertTrue(n.getPrevious() == null);
+            n.setPrevious(previous);
+            assertTrue(n.getPrevious() == previous);
+        });
+    }
 }
