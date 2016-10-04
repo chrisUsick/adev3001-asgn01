@@ -22,7 +22,8 @@ end
 
 task :bluej, [:path_to_source] => [:clean, :copy] do |t, args|
   path = args[:path_to_source]
-  Dir.glob("#{path}/**/*.java").each do |file|
+  raise ArgumentError.new('path_to_source is required') unless path && path.strip != ''
+  Dir.glob("#{path}/**/*").each do |file|
     copy_file_keep_structure file, target_dir, path
   end
 end
@@ -30,7 +31,7 @@ end
 
 task :clean do
   # FileUtils.rm Dir["#{target_dir}/*"]
-  `rm -r #{target_dir}/*`
+  `rm -r #{target_dir}/*` if Dir["#{target_dir}/*"].size > 0
 end
 
 task :copy do

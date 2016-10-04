@@ -84,7 +84,7 @@ public class TestSuite {
 
     }
 
-    public void it(String message, Runnable test) {
+    public void runTest(String message, Runnable test) {
         try {
             test.run();
         } catch (Exception e) {

@@ -14,11 +14,11 @@ public class NodeTest extends TestSuite {
     }
     @Test
     public void constructor() {
-        it("initialize with no data", () -> {
+        runTest("initialize with no data", () -> {
             new Node();
         });
 
-        it("initializes with previous and next nodes", () -> {
+        runTest("initializes with previous and next nodes", () -> {
             Node<String> node1 = new Node<>();
 
             Node<String> node3 = new Node<>();
@@ -30,7 +30,7 @@ public class NodeTest extends TestSuite {
 
     @Test
     public void properties() {
-        it("gets and sets an the element", () -> {
+        runTest("gets and sets an the element", () -> {
             Node<String> n = new Node<>();
             String str = "str";
             assertTrue(n.getElement() == null);
@@ -38,7 +38,7 @@ public class NodeTest extends TestSuite {
             assertTrue(n.getElement() == str);
         });
 
-        it("gets and sets an the next node", () -> {
+        runTest("gets and sets an the next node", () -> {
             Node<String> n = new Node<>();
             Node<String> next = new Node<>();
             assertTrue(n.getNext() == null);
@@ -46,7 +46,7 @@ public class NodeTest extends TestSuite {
             assertTrue(n.getNext() == next);
         });
 
-        it("gets and sets an the previous node", () -> {
+        runTest("gets and sets an the previous node", () -> {
             Node<String> n = new Node<>();
             Node<String> previous = new Node<>();
             assertTrue(n.getPrevious() == null);

@@ -16,14 +16,14 @@ public class EmployeeTest extends TestSuite {
 
     @Test
     public void constructor() {
-        it("initializes with an employee id", () -> {
+        runTest("initializes with an employee id", () -> {
             Employee e = new Employee(1);
             assertTrue(e.getEmployeeID() == 1);
             assertTrue(e.getFirstName() == null);
             assertTrue(e.getLastName() == null);
         });
 
-        it("intializes will all values", () -> {
+        runTest("intializes will all values", () -> {
             Employee e = new Employee(1, "Bob", "Foo");
             assertTrue(e.getEmployeeID() == 1);
             assertTrue(e.getFirstName().equals("Bob"));
@@ -33,17 +33,17 @@ public class EmployeeTest extends TestSuite {
 
     @Test
     public void properties() {
-        it("gets id", () -> {
+        runTest("gets id", () -> {
             Employee e = new Employee(1);
             assertTrue(e.getEmployeeID() == 1);
         });
 
-        it("gets firstName", () -> {
+        runTest("gets firstName", () -> {
             String fname = "fname";
             Employee e = new Employee(1, fname, null);
             assertTrue(e.getFirstName() == fname);
         });
-        it("gets lastName", () -> {
+        runTest("gets lastName", () -> {
             String lname = "lname";
             Employee e = new Employee(1, null, lname);
             assertTrue(e.getLastName() == lname);
@@ -52,7 +52,7 @@ public class EmployeeTest extends TestSuite {
 
     @Test
     public void compareTo() {
-        it("compares 2 employees", () -> {
+        runTest("compares 2 employees", () -> {
             Employee e1 = new Employee(1), e2 = new Employee(2);
             assertTrue(e1.compareTo(e2) < 0);
             assertTrue(e2.compareTo(e1) > 0);

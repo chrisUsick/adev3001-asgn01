@@ -23,7 +23,6 @@ import java.util.NoSuchElementException;
  * @version 1.0
  *
  */
-
 public class LinkedList<E extends Comparable<E>> {
     private static final String NO_ELEMENT_EXISTS = "Element does not exist";
     private Node<E> head;
@@ -153,7 +152,7 @@ public class LinkedList<E extends Comparable<E>> {
     }
 
     /**
-     * check if the list has elements in it
+     * check if the list has elements in runTest
      * @return
      */
     public boolean isEmpty(){
@@ -227,7 +226,7 @@ public class LinkedList<E extends Comparable<E>> {
 
     /**
      * Inserts an element into the list in the correct order
-     * If the list isn't ordered it will insert into the first valid location
+     * If the list isn't ordered runTest will insert into the first valid location
      * @param data  the data to insert
      * @return      true if the insertion succeeded
      */
