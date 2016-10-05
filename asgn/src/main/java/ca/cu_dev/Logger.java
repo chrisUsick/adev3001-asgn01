@@ -1,22 +1,51 @@
 package ca.cu_dev;
 
 /**
- * Created by chris on 26-Sep-16.
+ * Logger - Global logging class
+ *
+ * <pre>
+ *
+ * Assignment: #1
+ * Course: ADEV-3001
+ * Date Created: September 26, 2016
+ *
+ * Revision Log
+ * Who          When    Reason
+ * --------- ---------- ----------------------------------
+ *
+ * </pre>
+ *
+ * @author Chris Usick
+ * @version 1.0
+ *
  */
 public class Logger {
 
     private static final String ERROR = "Error";
     private static final String INFO = "INFO";
 
-    public void i(String message) {
-        log(Logger.INFO, message);
+    /**
+     * logs content at the info level
+     * @param message   message to log
+     */
+    public void logInfo(String message) {
+        logHelper(Logger.INFO, message);
     }
 
-    private void log(String level, String message) {
+    /**
+     * formats and prints the log messages
+     * @param level     the level of log message
+     * @param message   message to log
+     */
+    private void logHelper(String level, String message) {
         System.out.println(level + "\t" + message);
     }
 
-    public void e(String message) {
-        log(Logger.ERROR, message);
+    /**
+     * logs an error message
+     * @param message   message of the error
+     */
+    public void logError(String message) {
+        logHelper(Logger.ERROR, message);
     }
 }

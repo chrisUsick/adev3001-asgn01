@@ -3,35 +3,72 @@ package ca.cu_dev;
 import java.util.NoSuchElementException;
 
 /**
- * Created by chris on 26-Sep-16.
+ * LinkedListTest - Test class for LinkedList. Includes a main method so it can be run standalone or
+ * called programmatically
+ *
+ * <pre>
+ *
+ * Assignment: #1
+ * Course: ADEV-3001
+ * Date Created: October 03, 2016
+ *
+ * Revision Log
+ * Who          When    Reason
+ * --------- ---------- ----------------------------------
+ *
+ * </pre>
+ *
+ * @author Chris Usick
+ * @version 1.0
+ *
  */
 public class LinkedListTest extends TestSuite {
-    public LinkedListTest() {
-        super(new Logger());
-        setName("Linked Lists");
-    }
-    public static void main(String[] args) throws Exception{
-        LinkedListTest testSuite = new LinkedListTest();
-        testSuite.run();
-    }
     private final String string1 = "str1";
     private final String string2 = "str2";
     private final String string3 = "str3";
 
+    /**
+     * defualt constructor. sets the name and logger
+     */
+    public LinkedListTest() {
+        super(new Logger());
+        setName("Linked Lists");
+    }
+
+    /**
+     * Execute this test
+     * @param args          command line arguments
+     * @throws Exception    If test execution throws an exception the application exists
+     */
+    public static void main(String[] args) throws Exception{
+        LinkedListTest testSuite = new LinkedListTest();
+        testSuite.run();
+    }
+
+    /**
+     * Asserts that the given list is empty
+     * @param list  list to check
+     */
     public void assertListEmpty(LinkedList<?> list) {
         assertThrows(() -> list.getFirst(), NoSuchElementException.class, "Head isn't null");
         assertThrows(() -> list.getLast(), NoSuchElementException.class, "Tail isn't null");
         assertTrue(list.getSize() == 0, "List size is not 0");
     }
 
+    /**
+     * test list is constructed correctly
+     */
     @Test
-    public void constructor() {
+    public void testConstructor() {
         runTest("inits correctly", () -> {
             LinkedList<String> list = new LinkedList<>();
             assertTrue(list.getSize() == 0);
         });
     }
 
+    /**
+     * test the add method
+     */
     @Test
     public void add() {
         runTest("adds an element to the head of empty list", () -> {
@@ -54,6 +91,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the addAfter with Position method
+     */
     @Test
     public void addAfterPosition() {
         runTest("doesn't add a element if position greater than size", () -> {
@@ -84,7 +124,6 @@ public class LinkedListTest extends TestSuite {
                 // if we get here, then the test failed
                 assertTrue(false, "addAfter added an element to an empty list");
             } catch (NoSuchElementException e) {
-                assertTrue(true);
                 assertTrue(list.getSize() == 0);
             }
         });
@@ -103,17 +142,29 @@ public class LinkedListTest extends TestSuite {
 
         runTest("adds after to the last element in the list", () -> {
             LinkedList<String> list = new LinkedList<>();
-            String str0 = "str0";
-            String string2 = "str2";
+            String string0 = "str0";
             list.add("str1");
-            list.add(str0);
+            list.add(string0);
             list.addAfter(string2, 2);
-            assertTrue(list.getFirst() == str0);
+            assertTrue(list.getFirst() == string0);
             assertTrue(list.getLast() == string2);
+            assertTrue(list.getSize() == 3);
+        });
+
+        runTest("adds after the first element in a multi element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(string3);
+            list.add(string1);
+            list.addAfter(string2, 1);
+            assertTrue(list.getFirst() == string1);
+            assertTrue(list.get(2) == string2);
             assertTrue(list.getSize() == 3);
         });
     }
 
+    /**
+     * test the addAfter with Data method
+     */
     @Test
     public void addAfterData() {
         runTest("doesn't add an element if the data doesn't exist", () -> {
@@ -146,6 +197,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the addBefore with Position method
+     */
     @Test
     public void addBeforePosition() {
         runTest("doesn't add data if position is less than 0", () -> {
@@ -184,7 +238,7 @@ public class LinkedListTest extends TestSuite {
         runTest("adds an element before head of index 1 list", () -> {
             LinkedList<String> list = new LinkedList<>();
             list.add(string2);
-            list.addBefore(string1, string2);
+            list.addBefore(string1, 1);
             assertTrue(list.getFirst() == string1);
             assertTrue(list.getLast() == string2);
             assertTrue(list.getSize() == 2);
@@ -200,6 +254,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the addBefore with Data method
+     */
     @Test
     public void addBeforeData() {
         runTest("doesn't add data if data doesn't exist", () -> {
@@ -232,6 +289,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the addFirst method
+     */
     @Test
     public void addFirst() {
         runTest("adds to an empty list", () -> {
@@ -253,6 +313,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the addLast method
+     */
     @Test
     public void addLast() {
         runTest("adds to an empty list", () -> {
@@ -273,6 +336,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the clear method
+     */
     @Test
     public void clear() {
         runTest("clears an empty list", () -> {
@@ -290,6 +356,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the isEmpty method
+     */
     @Test
     public void isEmpty() {
         runTest("tests an empty list", () -> {
@@ -304,6 +373,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the get with No Argument method
+     */
     @Test
     public void getNoArgument() {
         runTest("throws an exception when list is empty", () -> {
@@ -325,6 +397,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the get with Data method
+     */
     @Test
     public void getData() {
         runTest("doesn't get an element that doesn't exist in list", () -> {
@@ -352,6 +427,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the get with Position method
+     */
     @Test
     public void getPosition() {
         runTest("throws exception negative position", () -> {
@@ -379,6 +457,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the getFirst method
+     */
     @Test
     public void getFirst() {
         runTest("throws exception for empty list", () -> {
@@ -401,6 +482,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the getLast method
+     */
     @Test
     public void getLast() {
         runTest("throws exception for empty list", () -> {
@@ -423,6 +507,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the getSize method
+     */
     @Test
     public void getSize() {
         runTest("gets size for an empty list", () -> {
@@ -438,6 +525,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the insert method
+     */
     @Test
     public void insert() {
         runTest("inserts into an empty list", () -> {
@@ -479,6 +569,9 @@ public class LinkedListTest extends TestSuite {
 
     }
 
+    /**
+     * test the removeHead method
+     */
     @Test
     public void removeHead() {
         runTest("throws exception for empty list", () -> {
@@ -505,6 +598,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the remove with Position method
+     */
     @Test
     public void removePosition() {
         runTest("throws exception for negative index", () -> {
@@ -535,8 +631,22 @@ public class LinkedListTest extends TestSuite {
             assertTrue(list.getLast() == string3);
             assertTrue(list.getSize() == 2);
         });
+
+        runTest("removes the last element in a list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(string3);
+            list.add(string2);
+            list.add(string1);
+            list.remove(3);
+            assertTrue(list.getFirst() == string1);
+            assertTrue(list.getLast() == string2);
+            assertTrue(list.getSize() == 2);
+        });
     }
 
+    /**
+     * test the remove with Data method
+     */
     @Test
     public void removeData() {
         runTest("throws exception for missing data", () -> {
@@ -561,8 +671,22 @@ public class LinkedListTest extends TestSuite {
             assertTrue(list.getLast() == string3);
             assertTrue(list.getSize() == 2);
         });
+
+        runTest("removes last element from multi-element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(string3);
+            list.add(string2);
+            list.add(string1);
+            list.remove("str3");
+            assertTrue(list.getFirst() == string1);
+            assertTrue(list.getLast() == string2);
+            assertTrue(list.getSize() == 2);
+        });
     }
 
+    /**
+     * test the removeFirst method
+     */
     @Test
     public void removeFirst() {
         runTest("throws exception for empty list", () -> {
@@ -589,6 +713,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the removeLast method
+     */
     @Test
     public void removeLast() {
         runTest("throws an exception for empty list", () -> {
@@ -615,6 +742,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the setHead method
+     */
     @Test
     public void setHead() {
         runTest("throws exception for empty list", () -> {
@@ -642,6 +772,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the set with Position method
+     */
     @Test
     public void setPosition() {
         runTest("throws exception for index less than 1 on empty list", () -> {
@@ -666,7 +799,7 @@ public class LinkedListTest extends TestSuite {
             assertTrue(list.getSize() == 1);
             assertTrue(list.getFirst().equals("str4"));
         });
-        runTest("sets position for multi-element list", () -> {
+        runTest("sets position for last element in multi-element list", () -> {
             LinkedList<String> list = new LinkedList<>();
             list.add(string3);
             list.add(string2);
@@ -675,13 +808,26 @@ public class LinkedListTest extends TestSuite {
             assertTrue(list.getSize() == 3);
             assertTrue(list.getLast().equals("str4"));
         });
+
+        runTest("sets position for multi-element list", () -> {
+            LinkedList<String> list = new LinkedList<>();
+            list.add(string3);
+            list.add(string2);
+            list.add(string1);
+            list.set("str4", 2);
+            assertTrue(list.getSize() == 3);
+            assertTrue(list.get(2).equals("str4"));
+        });
     }
 
+    /**
+     * test the set with Data method
+     */
     @Test
     public void setData() {
         runTest("throws exception when data doesn't exist", () -> {
             LinkedList<String> list = new LinkedList<>();
-            assertThrows(() -> list.set(string1), NoSuchElementException.class);
+            assertThrows(() -> list.set(string1, string2), NoSuchElementException.class);
         });
 
         runTest("sets data when there is a single element", () -> {
@@ -704,6 +850,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the setFirst method
+     */
     @Test
     public void setFirst() {
         runTest("throws exception for emtpy list", () -> {
@@ -731,6 +880,10 @@ public class LinkedListTest extends TestSuite {
         });
 
     }
+
+    /**
+     * test the setLast method
+     */
     @Test
     public void setLast() {
         runTest("throws exception for emtpy list", () -> {
@@ -759,6 +912,9 @@ public class LinkedListTest extends TestSuite {
         });
     }
 
+    /**
+     * test the linkedlist with employee objects
+     */
     @Test
     public void employeeLinkedLists() {
         Employee e1 = new Employee(1), e2 = new Employee(2), e3 = new Employee(3);
@@ -794,7 +950,4 @@ public class LinkedListTest extends TestSuite {
             assertTrue(list.get(new Employee(2)) == e2);
         });
     }
-
-
-
 }
